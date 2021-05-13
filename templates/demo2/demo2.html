@@ -11,6 +11,7 @@
     <!-- Owl carusel CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
 
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
 
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <style>
@@ -27,7 +28,7 @@
             background-color: tomato;
             /* width: 110px; */
         }
-        img, .image{
+        .swiper-wrapper img, .swiper-wrapper .image{
             width: 80px;
             height: 80px;
             object-fit: contain;
@@ -114,7 +115,158 @@
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Open modal
                 </button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#shiny-modal">
+                    Open modal 2
+                </button>
             </div>
+        </div>
+
+        <div class="row mt-5">
+            <style>
+
+                /* .selector-wrapper label {
+                    border: 1px solid #fff;
+                    padding: 10px;
+                    display: block;
+                    position: relative;
+                    margin: 10px;
+                    cursor: pointer;
+                }
+                label:before {
+                background-color: white;
+                color: white;
+                content: " ";
+                display: block;
+                border-radius: 50%;
+                border: 1px solid grey;
+                position: absolute;
+                z-index: 2;
+                width: 25px;
+                height: 25px;
+                text-align: center;
+                line-height: 28px;
+                transition-duration: 0.4s;
+                transform: scale(0);
+                }
+
+                label img {
+                height: 100px;
+                width: 100px;
+                transition-duration: 0.2s;
+                transform-origin: 50% 50%;
+                }
+
+                :checked + label {
+                border-color: #ddd;
+                }
+
+                :checked + label:before {
+                content: "✓";
+                background-color: grey;
+                transform: scale(1);
+                }
+
+                :checked + label img {
+                transform: scale(0.9);
+                z-index: -1;
+                } */
+
+                
+            </style>
+
+            <style>
+                .selector-wrapper {
+                    border: 1px solid red!important;
+                    display: inline-block;
+                }
+                .selector-wraper label {
+                    position: relative;
+                }
+                .selector-wraper label:before {
+                    position: absolute;
+                    top: 0px;
+                    right: 0px;
+                    z-index: 2;
+                    background-color: white;
+                    content: "";
+                    display: block;
+                    border-radius: 50%;
+                    width: 30px;
+                    height: 30px;
+                    transition-duration: 0.2s;
+                    transform: scale(0);
+                    /* text-align: center; */
+                    /* border: 1px solid grey;
+                    position: absolute;
+                    width: 25px;
+                    height: 25px;
+                    z-index: 2;
+                    line-height: 28px;
+                    transition-duration: 0.4s;
+                    transform: scale(0); */
+                }
+                .selector-wraper :checked + label:before {
+                    content: url(../../img/check-circle-solid-24.png);
+                    transform: scale(1);
+                }
+                .selector-wraper :checked + label img {
+                    transform: scale(0.9);
+                    z-index: -1;
+                }
+                .selector-wraper label {
+                    cursor: pointer;
+                }
+                .selector-wraper label img {
+                    width: 200px;
+                    height: 200px;
+                    object-fit: contain;
+                    transition-duration: 0.2s;
+                }
+            </style>
+            <div class="col-auto">
+                <div class="selector-wraper">
+                    <input class="img-selector d-none" type="checkbox" name="selector" id="1">
+                    <label for="1">
+                        <img src="../../img/earth.jpg" alt="">
+                    </label>
+                </div>
+            </div>
+            <div class="col-auto">
+                <div class="selector-wraper">
+                    <input class="img-selector d-none" type="checkbox" name="selector" id="2">
+                    <label for="2">
+                        <img src="../../img/chipmonks.jpg" alt="">
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-auto">
+                <button id="selector-show" class="btn btn-primary">SHOW SELECTED</button>
+            </div>
+            
+            <script>
+                document.getElementById('selector-show').addEventListener('click', e => {
+                    let selected = document.querySelectorAll(".selector-wraper :checked + label img");
+                    console.log(selected);
+                })
+            </script>
+            
+            <!-- <div class="col-auto">
+                <div class="checker"></div>
+                <img class="grid-img" src="../../img/chipmonks.jpg" alt="">
+            </div>
+            <div class="col-auto">
+                <img class="grid-img" src="../../img/earth.jpg" alt="">
+            </div>
+            <div class="col-auto">
+                <img class="grid-img" src="../../img/HandsHeart.jpg" alt="">
+            </div> -->
+            <!-- <div class="categories-wrapper">
+                <img src='https://66.media.tumblr.com/4f3cbb1b66a76a19a9794a162373abc5/tumblr_inline_n258pbAEBc1qhwjx8.png' alt='Random image' class="category-image" />
+                <input class='category-input' type="checkbox" name="categories[]" value="">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/Red_check.svg" class="selected-icon">
+                <input type="hidden" name="categoryFiles[]" value="">
+            </div> -->
         </div>
     </div>
 
@@ -128,38 +280,39 @@
             </div>
             <div class="modal-body">
                 <div class="cropper-container">
-                    <div class="text-center">
-                        Cropper placeholder
+                    <div class="text-center h-100 w-100">
+                        <img id="cropper-img" src="../../img/chipmonks.jpg" alt="" style="height: 100%; object-fit: contain;">
                     </div>
                 </div>
                 <div class="dropdown-divider"></div>
-                <div class="editor-controls py-3">
+                <div class="editor-controls">
                     <div class="text-center">
-                        Edit controls
+                        <input type="checkbox" class="btn-check" id="btn-check-outlined" autocomplete="off" disabled>
+                        <label class="btn btn-outline-primary" for="btn-check-outlined">Black & white</label><br>
                     </div>
                 </div>
                 <div class="dropdown-divider"></div>
                 <div class="footer mt-2">
                     <div class="editor-spinner" style="position: relative;">                        
-                        <div class="swiper-container mx-md-5 mySwiper2">
+                        <div class="swiper-container mySwiper2">
                             <div class="swiper-wrapper">
                                 <div class="swiper-slide">
                                     <img src="../../img/chipmonks.jpg" alt="">
                                 </div>
                                 <div class="swiper-slide">
-                                    <img src="../../img/chipmonks.jpg" alt="">
+                                    <img src="../../img/earth.jpg" alt="">
+                                </div>
+                                <div class="swiper-slide">
+                                    <img src="../../img/HandsHeart.jpg" alt="">
                                 </div>
                                 <div class="swiper-slide">
                                     <img src="../../img/chipmonks.jpg" alt="">
                                 </div>
                                 <div class="swiper-slide">
-                                    <img src="../../img/chipmonks.jpg" alt="">
+                                    <img src="../../img/earth.jpg" alt="">
                                 </div>
                                 <div class="swiper-slide">
-                                    <img src="../../img/chipmonks.jpg" alt="">
-                                </div>
-                                <div class="swiper-slide">
-                                    <img src="../../img/chipmonks.jpg" alt="">
+                                    <img src="../../img/HandsHeart.jpg" alt="">
                                 </div>
                             </div>
                             <style>
@@ -168,11 +321,14 @@
                                     font-weight: 900;
                                     opacity: 1;
                                     z-index: 99;
+                                    height: 80px;
+                                    top: 0px;
+                                    margin-top: 0px;
                                 }
                             </style>
                         </div>
-                        <div class="swiper-button swiper-button-next"></div>
-                        <div class="swiper-button swiper-button-prev"></div>
+                        <!-- <div class="swiper-button swiper-button-next"></div> -->
+                        <!-- <div class="swiper-button swiper-button-prev"></div> -->
                         <div class="row mx-0 overlay-container justify-content-around">
                             <div class="col overlay"></div>
                             <div class="col-auto selector"></div>
@@ -181,13 +337,87 @@
                     </div>
                 </div>
                 <div class="dropdown-divider"></div>
-                <div class="text-center">
-                    <button class="btn btn-primary px-5" data-bs-dismiss="modal">Save</button>
+                <div class="text-end">
+                    <style>
+                        .slider-hidden {
+                            display: none;
+                        }
+                    </style>
+                    <button id="cropper-save-btn" class="btn btn-secondary" data-bs-dismiss="modal">Auto crop all</button>
+                    <button id="swiper-next" class="btn btn-primary">Crop & Edit next</button>
+                    <button id="swiper-save" class="btn btn-primary px-5" data-bs-dismiss="modal" hidden>Crop & Save</button>
                 </div>
             </div>
         </div>
         </div>
     </div>
+
+    <!-- LIVE MODAL -->
+    <div class="modal fade" id="shiny-modal" tabindex="-1" role="dialog" aria-labelledby="shinyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-sm-down" role="document">
+            <div class="modal-content">
+    
+                <div id="load-spinner" class="spinner-overlay" hidden>
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+                
+                <div class="modal-header">
+                    <div class="header-btn-cont">
+                        <button type="button" id="page-back-btn" hidden class="header-btn page-back-btn"
+                            aria-label="Back">
+                            <i class='bx bx-arrow-back'></i>
+                        </button>
+                    </div>
+                    <div class="title-container">
+                        <h5 id="shiny-modal-title" class="modal-title">Add or select a picture</h5>
+                    </div>
+                    <div class="header-btn-cont">
+                        <button type="button" id="modal-close-btn" class="header-btn" aria-label="Close">
+                            <i class='bx bx-x'></i>
+                        </button>
+                    </div>
+                </div>
+    
+                <div class="modal-body">
+                    <div id="pages-container" class="pages-container">
+                        <div id="page-1" class="page" data-page="1">
+                            <div class="upl-sel-btns-cont text-center">
+    
+                                
+                                <button class="btn btn-primary">Device</button>
+    
+                                <a class="btn btn-primary upl-sel-btn" id="imgs-src-btn-instagram"><i
+                                        class='bx bxl-instagram'></i>Instagram</a>
+                                        
+                                <button class="btn btn-primary upl-sel-btn"><i
+                                        class='bx bxl-facebook'></i>Facebook</button>
+                                <button class="btn btn-primary upl-sel-btn"><i
+                                        class='bx bx-camera'></i>Camera</button>
+                            </div>
+    
+                            <div class="modal-cards-container">
+                                <div class="modal-cards-grid">
+                                    <div class="modal-card col-6 col-sm-4 col-lg-3 embed-responsive embed-responsive-1by1">
+                                        <!-- <div class="img-container embed-responsive-item"> -->
+                                            <div class="selector-wraper">
+                                                <input class="img-selector d-none" type="checkbox" name="selector" id="3">
+                                                <label for="3">
+                                                    <img src="../../img/earth.jpg" alt="">
+                                                </label>
+                                            </div>
+                                        <!-- </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
     <!-- Bootstrap 5 Scripts -->
@@ -221,13 +451,26 @@
                 var myModal = new bootstrap.Modal(myModalEl)
                 
                 let swiper2 = null;
-                myModalEl.addEventListener('shown.bs.modal', function (event) {
+                myModalEl.addEventListener('show.bs.modal', function (event) {
                     console.log('Modal show');
+                    if (swiper2 != null) {
+                        if (!swiper2.isBeginning) {
+                            swiper2.slideTo(0, 0, false);
+                            document.getElementById('swiper-save').hidden = true;
+                        }
+                    }
+                })
+                myModalEl.addEventListener('shown.bs.modal', function (event) {
+                    console.log('Modal shown');
                     if (swiper2 == null) {
                         swiper2 = new Swiper(".mySwiper2", {
+                            init: false,
                             slidesPerView: "auto",
+                            // allowSlideNext: false,	
+                            // allowSlidePrev:	false,
+                            allowTouchMove: false,
+                            grabCursor: false,
                             centeredSlides: true,
-                            grabCursor: true,
                             pagination: {
                                 el: ".swiper-pagination",
                                 type: "progressbar",
@@ -235,14 +478,40 @@
                             spaceBetween: 5,
                             resistanceRatio: .5,
                             navigation: {
-                                nextEl: ".swiper-button-next",
-                                prevEl: ".swiper-button-prev",
+                                disabledClass: 'slider-hidden',
+                                // nextEl: ".swiper-button-next",
+                                nextEl: "#swiper-next"
+                                // prevEl: ".swiper-button-prev",
                             },
                         });
+
+                        swiper2.on('slideChange', e => {
+                            console.log(e.realIndex)
+                            console.log('change slide')
+                            document.getElementById('cropper-img').src = $(e.slides[e.realIndex]).find('img').attr('src')
+
+                        });
+                        swiper2.on('reachEnd', e => {
+                            console.log('slider end')
+                            document.getElementById('swiper-save').hidden = false;
+                        });
+
+                        swiper2.init();
                     }
                 })
 
                 // myModal.show()
+
+                document.getElementById('btn-check-outlined').addEventListener('change', e => {
+                    console.log(e.currentTarget.checked)
+                    if (e.currentTarget.checked) {
+                        document.getElementById('cropper-img').style.filter = 'grayscale(100%)'
+                        // console.log(document.getElementById('cropper-img').style)
+                    }
+                    else {
+                        document.getElementById('cropper-img').style.filter = 'none'
+                    }
+                })
 
             });
     </script>

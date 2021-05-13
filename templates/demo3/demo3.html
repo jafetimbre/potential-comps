@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Boxicons CSS -->
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- Own CSS -->
+    <link rel="stylesheet" href="./shiny-picker.css">
+</head>
+<body>
+    <div class="text-center mt-5">
+        <img id="test-img_1" src="" alt="" style="width: 200px;height: 200px;object-fit: contain;">
+        <img id="test-img_2" src="" alt="" style="width: 200px;height: 200px;object-fit: contain;">
+        <img id="test-img_3" src="" alt="" style="width: 200px;height: 200px;object-fit: contain;">
+        <button id="open-modal" class="btn btn-primary">Open modal</button>
+    </div>
+
+    <div class="modal fade" id="shiny-modal" tabindex="-1" role="dialog" aria-labelledby="shinyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-sm-down" role="document">
+            <div class="modal-content">
+    
+                <!-- <div id="load-spinner" class="spinner-overlay" hidden>
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div> -->
+                
+                <div class="modal-header">
+                    <div class="header-btn-cont">
+                        <button type="button" id="page-back-btn" class="header-btn page-back-btn"
+                            aria-label="Back">
+                            <i class='bx bx-arrow-back'></i>
+                        </button>
+                    </div>
+                    <div class="title-container">
+                        <h5 id="shiny-modal-title" class="modal-title">Add or select a picture</h5>
+                        <a id="shiny-modal-log-out" href="#">Log out</a>
+                    </div>
+                    <div class="header-btn-cont">
+                        <button type="button" id="modal-close-btn" class="header-btn" aria-label="Close">
+                            <i class='bx bx-x'></i>
+                        </button>
+                    </div>
+                </div>
+    
+                <div class="modal-body">
+                    <div id="pages-container" class="pages-container">
+                        <div id="page-1" class="page" data-page="1">
+                            <div class="upl-sel-btns-cont">
+    
+                                <input type="file" id="img-input-device" class="img-input" accept="image/*" disabled/>
+                                <label class="btn btn-primary upl-sel-btn img-upl-btn" for="img-input-device"><i
+                                        class='bx bxs-devices'></i>Device</label>
+    
+                                <a class="btn btn-primary upl-sel-btn" id="imgs-src-btn-instagram" href="#"><i
+                                        class='bx bxl-instagram'></i>Instagram</a>
+                                        
+                                <button class="btn btn-primary upl-sel-btn"><i
+                                        class='bx bxl-facebook'></i>Facebook</button>
+                                <button class="btn btn-primary upl-sel-btn"><i
+                                        class='bx bx-camera'></i>Camera</button>
+                                
+                                <div class="separator">
+                                    <span>or</span>
+                                </div>
+                            </div>
+    
+                            <div class="modal-cards-container">
+                                <div class="modal-cards-grid">
+                                    <div class="modal-card col-6 col-sm-4 col-lg-3 embed-responsive embed-responsive-1by1">
+                                        <div class="img-container embed-responsive-item">
+                                            <div class="selector-wrapper">
+                                                <input class="img-selector d-none" type="checkbox" name="selector" id="3">
+                                                <label for="3">
+                                                    <img src="../../img/earth.jpg" data-source="predefined" alt="">
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-card col-6 col-sm-4 col-lg-3 embed-responsive embed-responsive-1by1">
+                                        <div class="img-container embed-responsive-item">
+                                            <div class="selector-wrapper">
+                                                <input class="img-selector d-none" type="checkbox" name="selector" id="4">
+                                                <label for="4">
+                                                    <img src="../../img/chipmonks.jpg" data-source="predefined" alt="">
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-card col-6 col-sm-4 col-lg-3 embed-responsive embed-responsive-1by1">
+                                        <div class="selector-wrapper embed-responsive-item">
+                                            <input class="img-selector d-none" type="checkbox" name="selector" id="5">
+                                            <label for="5">
+                                                <img src="../../img/HandsHeart.jpg" data-source="predefined" alt="">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="confirm-btn-container hidden">
+                                    <button class="btn btn-primary">Add images <span id="selected-imgs-counter" class="badge badge-light">4</span></button>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div id="page-2" hidden class="page" data-page="2">
+                            <div class="modal-cards-container">
+                                <div class="modal-cards-grid">
+                                    <div class="modal-card col-6 col-sm-4 col-lg-3 embed-responsive embed-responsive-1by1">
+                                        <div class="img-container embed-responsive-item">
+                                            <img src="" data-source="instagram" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div id="page-3" class="page" data-page="3">
+                            <div class="editor-container">
+                                <div class="editor-image-container">
+                                    <img id="editor-image" src="" alt="">
+                                </div>
+                                <div class="editor-controls">
+                                    <div class="controls">
+                                        <div class="btn-group mr-2" role="group" aria-label="Zoom">
+                                            <button id="editor-zoom-in-btn" class="btn btn-primary edit-action-btn"><i class='bx bx-zoom-in' ></i></button>
+                                            <button id="editor-zoom-out-btn" class="btn btn-primary edit-action-btn"><i class='bx bx-zoom-out'></i></button>
+                                        </div>
+                                        <div class="btn-group mr-2" role="group" aria-label="Rotate">
+                                            <button id="editor-rotate-left-btn" class="btn btn-primary edit-action-btn"><i class='bx bx-rotate-left'></i></button>
+                                            <button id="editor-rotate-right-btn" class="btn btn-primary edit-action-btn"><i class='bx bx-rotate-right'></i></button>
+                                        </div>
+                                        <button id="editor-reset-btn" class="btn btn-primary edit-action-btn"><i class='bx bx-reset'></i></button>
+                                    </div>
+                                    <div class="controls-footer">
+                                        <div class="progress-container">
+                                            <div id="save-progress-bar" class="progress" hidden>
+                                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+                                            </div>
+                                        </div>
+                                        <button id="editor-save-image-btn" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Script -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!-- Isotope Layout Script -->
+    <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
+    <!-- Cropper JS Scipt -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.min.js" integrity="sha512-FHa4dxvEkSR0LOFH/iFH0iSqlYHf/iTwLc5Ws/1Su1W90X0qnxFxciJimoue/zyOA/+Qz/XQmmKqjbubAAzpkA==" crossorigin="anonymous"></script>
+
+    <!-- Own Script -->
+    <script src="./shiny-picker.js"></script>
+    <script src="./demo3.js"></script>
+</body>
+</html>

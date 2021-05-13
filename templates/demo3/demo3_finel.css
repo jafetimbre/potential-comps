@@ -1,0 +1,340 @@
+@media (max-width: 575.98px) {
+    .modal-fullscreen-sm-down {
+        width: 100vw;
+        max-width: none;
+        height: 100%;
+        margin: 0;
+    }
+
+    .modal-fullscreen-sm-down .modal-content {
+        height: 100%;
+        border: 0;
+        border-radius: 0; 
+    }
+    .modal-fullscreen-sm-down .modal-header {
+        border-radius: 0;
+    }
+    .modal-fullscreen-sm-down .modal-body {
+        overflow-y: auto;
+    }
+    .modal-fullscreen-sm-down .modal-footer {
+        border-radius: 0;
+    }
+}
+
+.modal-body {
+    overflow: hidden;
+    padding: 0px;
+    height: 600px;
+}
+
+.spinner-overlay {
+    position: absolute;
+    z-index: 99999999;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    background-color: rgba(233, 233, 233, 0.651);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: .2rem;
+}
+
+.spinner-overlay div {
+    color: var(--primary-color);
+    height: 4rem;
+    width: 4rem;
+    vertical-align: middle;
+    border-width: 5px;
+}
+
+.pages-container {
+    /* width: 100%; */
+    display: flex;
+    width: 300%;
+    height: 100%;
+}
+
+.pages-container .page {
+    padding: 0px 1px;
+    width: 33.34%;
+    transition: margin-left .3s ease-in-out;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.upl-sel-btns-cont {
+    text-align: center;
+    margin-top: 12px;
+    margin-bottom: 8px;
+    padding: 0px 10px;
+}
+
+.img-input {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.upl-sel-btns-cont .img-upl-btn {
+    margin-bottom: 0px;
+}
+
+.upl-sel-btn {
+    margin-top: 4px;
+    color: #fff!important;
+}
+
+.upl-sel-btn i {
+    font-size: 22px;
+    margin-right: 5px;
+    vertical-align: text-bottom;
+}
+
+.upl-sel-btn:hover i {
+    -webkit-animation: tada 1.5s ease infinite;
+    animation: tada 1.5s ease infinite;
+}
+
+.separator {
+    border-top: 1px solid #dee2e6;
+    text-align: center;
+    line-height: .1rem; 
+    margin-top: 12px;
+}
+
+.separator span {
+    background:#fff; 
+    padding: 0 10px;
+}
+
+.modal-header .header-btn-cont {
+    height: 30px;
+    width: 30px;
+}
+
+.modal-header .header-btn {
+    padding: 2px 3px;
+    border: 0px;
+    background-color: transparent;
+}
+
+.modal-header .header-btn i {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .5;
+    vertical-align: middle;
+}
+
+.modal-header .title-container {
+    text-align: center;
+}
+
+
+/* PAGE 1 & 2*/
+.modal-cards-container {
+    /* background-color: brown; */
+    background-color: #f7f7f7;
+    margin-top: 15px;
+    overflow-y: scroll;
+    flex: 1;
+    padding: 0px 5px 5px 5px;
+}
+
+.modal-cards-grid {
+    /* border: 1px solid #333; */
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    /* justify-content: center; */
+}
+
+.modal-cards-grid:after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.modal-card {
+    position: relative;
+    float: left;
+}
+
+/* ================= start not included */
+.modal-card .img-container {
+    width: 100%;
+    height: 100%;
+    padding: 2px;
+    transform: scale(1);
+    transition-duration: .2s;
+}
+
+.modal-card .img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.modal-card .img-container:hover {
+    /* transition: border-width .1s linear; */
+    /* border: 3px solid #5f5f5f; */
+    /* border: 3px solid #3e9ca3; */
+    transform: scale(.95);
+    transition-duration: .2s;
+}
+/* ================= end not included */
+
+/* ========== PAGE 3 (EDITOR) ============= */
+
+.editor-container {
+    height: 100%;
+}
+
+.editor-container .editor-image-container {
+    height: 80%;
+}
+
+.editor-container .editor-controls {
+    height: 20%;
+    display: flex;
+    flex-direction: column;
+}
+.editor-container .editor-controls .controls {
+    text-align: center;
+}
+
+.editor-container .editor-image-container #editor-image {
+    height: 100%;
+    width: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.editor-container .editor-controls .controls {
+    flex: 1;
+    padding: 10px;
+}
+
+.editor-container .editor-controls .controls-footer {
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    text-align: end;
+    vertical-align: middle;
+    border-top: 1px solid #dee2e6;
+    padding: 10px;
+}
+
+
+.edit-action-btn {
+    padding: 3px 5px;
+    text-align: center;
+}
+
+.edit-action-btn i {
+    font-size: 28px;
+    vertical-align: text-bottom;
+}
+
+.editor-controls .controls-footer #editor-save-image-btn {
+    width: auto;
+}
+
+.editor-controls .controls-footer .progress-container {
+    flex: 1;
+    margin: auto 20px auto 10px;
+}
+
+.controls-footer .progress-container .progress .progress-bar {
+    background-color: var(--primary-color);
+}
+
+
+
+
+
+/* .editor-container .editor-controls .control-row {
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    height: 50%;
+}
+
+.editor-controls .control-row button {
+    height: 40px;
+}
+
+.editor-controls .control-row.bottom {
+    justify-content: flex-end;
+    vertical-align: bottom;
+} */
+
+/* ============================================ CONFIRM BUTTON PAGE 1 ====================================== */
+#confirm-btn-container {
+    position: absolute;
+    bottom: 8px;
+    left: 0px;
+    width: 100%;
+    text-align: center;
+}
+
+
+/* ============================================ SELECTOR ====================================== */
+
+.selector-wrapper {
+    border: 1px solid red!important;
+    display: inline-block;
+}
+.selector-wraper label {
+    position: relative;
+}
+.selector-wraper label:before {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    z-index: 2;
+    background-color: white;
+    content: "";
+    display: block;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    transition-duration: 0.2s;
+    transform: scale(0);
+    /* text-align: center; */
+    /* border: 1px solid grey;
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    z-index: 2;
+    line-height: 28px;
+    transition-duration: 0.4s;
+    transform: scale(0); */
+}
+.selector-wraper :checked + label:before {
+    content: url(../../img/check-circle-solid-24.png);
+    transform: scale(1);
+}
+.selector-wraper :checked + label img {
+    transform: scale(0.9);
+    z-index: -1;
+}
+.selector-wraper label {
+    cursor: pointer;
+}
+.selector-wraper label img {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    transition-duration: 0.2s;
+}
