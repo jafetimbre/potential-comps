@@ -6,7 +6,8 @@ const ShinyPicker = {
 
     _components: {
         progressBar: document.querySelector("#save-progress-bar"),
-        spinner: document.querySelector("#load-spinner")
+        spinner: document.querySelector("#load-spinner"),
+        swiper: null
     },
 
     _cropper: {
@@ -40,12 +41,14 @@ const ShinyPicker = {
         this._modal.querySelector("#shiny-modal-title").textContent = this._pageTitles[value];
         const pageOne = this._modal.querySelector("#page-1");
         const pageTwo = this._modal.querySelector("#page-2");
+        this.reset();
 
         this._modal.querySelector("#page-back-btn").hidden = true;
         if (value == 1) {
             this._modal.querySelector("#page-back-btn").hidden = true;
-            this._modal.querySelector("#shiny-modal-log-out").hidden = true;
-            this._cropper.instance.disable()
+            // this._modal.querySelector("#shiny-modal-log-out").hidden = true;
+            this._modal.querySelector(".shiny-modal-log-out-container").classList.toggle('hidden', true);
+            // this._cropper.instance.disable();
             if (this._curPage != 1) {
                 pageOne.style.marginLeft = "0%";
             }
@@ -54,14 +57,15 @@ const ShinyPicker = {
             this._modal.querySelector("#page-back-btn").hidden = false;
 
             if (value == 2 && this._curPage != 2) {
-                this._modal.querySelector("#shiny-modal-log-out").hidden = false;
+                this._modal.querySelector(".shiny-modal-log-out-container").classList.toggle('hidden', false);
                 pageTwo.hidden = false;
                 pageOne.style.marginLeft = "-33.33%";
-                this._cropper.instance.disable()
+                // this._cropper.instance.disable()
             }
             else if (value == 3 && this._curPage !== 3) {
 
-                this._modal.querySelector("#shiny-modal-log-out").hidden = true;
+                // this._modal.querySelector("#shiny-modal-log-out").hidden = true;
+                this._modal.querySelector(".shiny-modal-log-out-container").classList.toggle('hidden', true);
 
                 if (this._cropper.instance != null && this._cropper.isReady) {
                     this._cropper.instance.reset();
@@ -88,34 +92,28 @@ const ShinyPicker = {
         })
     
         const cropperImage = document.getElementById('editor-image');
-        this._cropper.instance = new Cropper(cropperImage, {
-            aspectRatio: 1 / 1,
-            dragMode: "move",
-            viewMode: 1,
-            responsive: true,
-            guides: false,
-            center: false,
-            highlight: false,
-            toggleDragModeOnDblclick: false,
+        // this._cropper.instance = new Cropper(cropperImage, {
+        //     aspectRatio: 1 / 1,
+        //     dragMode: "move",
+        //     viewMode: 1,
+        //     responsive: true,
+        //     guides: false,
+        //     center: false,
+        //     highlight: false,
+        //     toggleDragModeOnDblclick: false,
 
-            crop(event) {
-                // console.log(event.detail.x);
-                // console.log(event.detail.y);
-                // console.log(event.detail.width);
-                // console.log(event.detail.height);
-                // console.log(event.detail.rotate);
-                // console.log(event.detail.scaleX);
-                // console.log(event.detail.scaleY);
-            },
-            ready() {
-                ShinyPicker._cropper.isReady = true;
+        //     crop(event) {
+                
+        //     },
+        //     ready() {
+        //         ShinyPicker._cropper.isReady = true;
 
-                setTimeout( () => {
-                    ShinyPicker.currentPage = 3;
-                    ShinyPicker.enable([ShinyPicker._components.spinner]);
-                }, 500)
-            }
-        });
+        //         setTimeout( () => {
+        //             ShinyPicker.currentPage = 3;
+        //             ShinyPicker.enable([ShinyPicker._components.spinner]);
+        //         }, 500)
+        //     }
+        // });
 
         // Device upload
         this._modal.querySelector('#img-input-device').addEventListener('change', e => {
@@ -140,18 +138,6 @@ const ShinyPicker = {
 
             e.currentTarget.value = ""
         });
-
-        // Navigation buttons
-        this._modal.querySelector('#modal-close-btn').addEventListener('click', () => {
-            this.hide();
-        });
-        this._modal.querySelector('#page-back-btn').addEventListener('click', () => {
-            if (this.currentPage > 1)
-                if (this.previousPage == 1)
-                    this.currentPage = this.previousPage;
-                else 
-                    this.currentPage -= 1;
-        });
         this._modal.querySelector('#imgs-src-btn-instagram').addEventListener('click', e => {
             e.preventDefault();
             if (e.currentTarget.hasAttribute('data-auth')) {
@@ -166,48 +152,63 @@ const ShinyPicker = {
             }
         });
 
+        // Navigation buttons
+        this._modal.querySelector('#modal-close-btn').addEventListener('click', () => {
+            this.hide();
+        });
+        this._modal.querySelector('#page-back-btn').addEventListener('click', () => {
+            if (this.currentPage > 1)
+                if (this.previousPage == 1) {
+                    this.currentPage = this.previousPage;
+                }
+                else
+                    this.currentPage -= 1;
+        });
+        
+
         // Editor controls
-        this._modal.querySelector('#editor-zoom-in-btn').addEventListener('click', e => {
-            if (this._cropper.instance != null && this._cropper.isReady) {
-                this._cropper.instance.zoom(0.1);
-            }
-        });
-        this._modal.querySelector('#editor-zoom-out-btn').addEventListener('click', e => {
-            if (this._cropper.instance != null && this._cropper.isReady) {
-                this._cropper.instance.zoom(-0.1);
-            }
-        });
-        this._modal.querySelector('#editor-rotate-left-btn').addEventListener('click', e => {
-            if (this._cropper.instance != null && this._cropper.isReady) {
-                this._cropper.instance.rotate(-90);
-            }
-        });
-        this._modal.querySelector('#editor-rotate-right-btn').addEventListener('click', e => {
-            if (this._cropper.instance != null && this._cropper.isReady) {
-                this._cropper.instance.rotate(90);
-            }
-        });
-        this._modal.querySelector('#editor-reset-btn').addEventListener('click', e => {
-            if (this._cropper.instance != null && this._cropper.isReady) {
-                this._cropper.instance.reset();
-            }
-        });
-        this._modal.querySelector('#editor-save-image-btn').addEventListener('click', e => {
-            if (this._cropper.instance != null && this._cropper.isReady) {
-                let canvas = this._cropper.instance.getCroppedCanvas({
-                    maxWidth: this._exportOptions.imageMaxSize[0],
-                    maxHeight: this._exportOptions.imageMaxSize[1],
-                    fillColor: '#fff',
-                    imageSmoothingEnabled: false,
-                    imageSmoothingQuality: 'high',
-                })
+        // this._modal.querySelector('#editor-zoom-in-btn').addEventListener('click', e => {
+        //     if (this._cropper.instance != null && this._cropper.isReady) {
+        //         this._cropper.instance.zoom(0.1);
+        //     }
+        // });
+        // this._modal.querySelector('#editor-zoom-out-btn').addEventListener('click', e => {
+        //     if (this._cropper.instance != null && this._cropper.isReady) {
+        //         this._cropper.instance.zoom(-0.1);
+        //     }
+        // });
+        // this._modal.querySelector('#editor-rotate-left-btn').addEventListener('click', e => {
+        //     if (this._cropper.instance != null && this._cropper.isReady) {
+        //         this._cropper.instance.rotate(-90);
+        //     }
+        // });
+        // this._modal.querySelector('#editor-rotate-right-btn').addEventListener('click', e => {
+        //     if (this._cropper.instance != null && this._cropper.isReady) {
+        //         this._cropper.instance.rotate(90);
+        //     }
+        // });
+        // this._modal.querySelector('#editor-reset-btn').addEventListener('click', e => {
+        //     if (this._cropper.instance != null && this._cropper.isReady) {
+        //         this._cropper.instance.reset();
+        //     }
+        // });
+
+        // this._modal.querySelector('#editor-save-image-btn').addEventListener('click', e => {
+        //     if (this._cropper.instance != null && this._cropper.isReady) {
+        //         let canvas = this._cropper.instance.getCroppedCanvas({
+        //             maxWidth: this._exportOptions.imageMaxSize[0],
+        //             maxHeight: this._exportOptions.imageMaxSize[1],
+        //             fillColor: '#fff',
+        //             imageSmoothingEnabled: false,
+        //             imageSmoothingQuality: 'high',
+        //         })
                 
-                this.save({
-                    source: this._selectedSource,
-                    canvas: canvas
-                })
-            }
-        });
+        //         this.save({
+        //             source: this._selectedSource,
+        //             canvas: canvas
+        //         })
+        //     }
+        // });
 
         Array.from(this._modal.querySelectorAll('.confirm-btn-container button')).forEach( btn => {
             btn.addEventListener('click', e => {
@@ -216,12 +217,17 @@ const ShinyPicker = {
                     case 1: {
                         let checked = this._modal.querySelectorAll('.img-selector:checked + label img[data-source="predefined"]');
                         console.log(checked);
+                        this.hide();
                         break;
                     }
                     case 2: {
                         let checked = this._modal.querySelectorAll('.img-selector:checked + label img[data-source="instagram"]');
+
+                        this.currentPage = 3;
+                        break;
                     }
                 }
+                
             })
         });
         Array.from(this._modal.getElementsByClassName('img-selector')).forEach( sel => {
@@ -233,7 +239,7 @@ const ShinyPicker = {
                         if (checked.length > 0) {
                             this._modal.querySelector('#page-1 .upl-sel-btns-cont').classList.toggle('hidden', true);
                             this._modal.querySelector('#page-1 .confirm-btn-container').classList.toggle('hidden', false);
-                            this._modal.querySelector('#page-1 .confirm-btn-container #selected-imgs-counter').textContent = checked.length;
+                            this._modal.querySelector('#page-1 .confirm-btn-container .selected-imgs-counter').textContent = checked.length;
                         }
                         else {
                             this._modal.querySelector('#page-1 .upl-sel-btns-cont').classList.toggle('hidden', false);
@@ -246,9 +252,12 @@ const ShinyPicker = {
                         let checked = this._modal.querySelectorAll('.img-selector:checked + label img[data-source="instagram"]');
                         if (checked.length > 0) {
                             console.log('TODO: show save button')
+                            this._modal.querySelector('#page-2 .confirm-btn-container').classList.toggle('hidden', false);
+                            this._modal.querySelector('#page-2 .confirm-btn-container .selected-imgs-counter').textContent = checked.length;
                         }
                         else {
                             console.log('TODO: hide save button')
+                            this._modal.querySelector('#page-2 .confirm-btn-container').classList.toggle('hidden', true);
                         }
                         break;
                     }
@@ -261,22 +270,22 @@ const ShinyPicker = {
             e.preventDefault();
             console.log(e.currentTarget.href)
 
-            $.ajax({
-                url: e.currentTarget.href,
-                type: 'POST',
-                data: { 
-                    'targetSocial': 'ig',
-                    'target': this._exportTarget.dataset.position
-                },
-                dataType: 'json',
-                success: function (res) {
-                    console.log(res);
-                    if (res.status == 'success') {
-                        let url = `${res.redirect_uri}`;
-                        window.location.replace(url)
-                    }
-                }
-            });
+            // $.ajax({
+            //     url: e.currentTarget.href,
+            //     type: 'POST',
+            //     data: { 
+            //         'targetSocial': 'ig',
+            //         'target': this._exportTarget.dataset.position
+            //     },
+            //     dataType: 'json',
+            //     success: function (res) {
+            //         console.log(res);
+            //         if (res.status == 'success') {
+            //             let url = `${res.redirect_uri}`;
+            //             window.location.replace(url)
+            //         }
+            //     }
+            // });
         });
 
         return this
@@ -288,8 +297,9 @@ const ShinyPicker = {
             sel.checked = false;
         });
         this._modal.querySelector('#page-1 .upl-sel-btns-cont').classList.toggle('hidden', false);
-        this._modal.querySelector('#page-1 .confirm-btn-container').classList.toggle('hidden', true);
-
+        this._modal.querySelectorAll('.confirm-btn-container').forEach( el => {
+            el.classList.toggle('hidden', true);
+        });
     },
 
     open: function (expTarget, page=1) {
@@ -330,6 +340,7 @@ const ShinyPicker = {
         switch (data.source) {
             case 'device':
             case 'instagram': {
+                break;
                 // this._exportTarget.src = data.canvas.toDataURL();
                 data.canvas.toBlob(blob => {
                     console.log(blob)
@@ -415,7 +426,7 @@ const ShinyPicker = {
 
                 // TODO: rewrite save function for multiple images
 
-                return 
+                break; 
                 let formData = new FormData();
 
                 formData.append('position', cardindex);

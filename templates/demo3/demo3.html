@@ -6,15 +6,19 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <!-- Boxicons CSS -->
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 
     <!-- Own CSS -->
     <link rel="stylesheet" href="./shiny-picker.css">
 </head>
 <body>
     <div class="text-center mt-5">
-        <img id="test-img_1" src="" alt="" style="width: 200px;height: 200px;object-fit: contain;">
-        <img id="test-img_2" src="" alt="" style="width: 200px;height: 200px;object-fit: contain;">
-        <img id="test-img_3" src="" alt="" style="width: 200px;height: 200px;object-fit: contain;">
+        <div class="mb-5" hidden>
+            <img id="test-img_1" src="" alt="" style="width: 200px;height: 200px;object-fit: contain;">
+            <img id="test-img_2" src="" alt="" style="width: 200px;height: 200px;object-fit: contain;">
+            <img id="test-img_3" src="" alt="" style="width: 200px;height: 200px;object-fit: contain;">
+        </div>
         <button id="open-modal" class="btn btn-primary">Open modal</button>
     </div>
 
@@ -37,7 +41,9 @@
                     </div>
                     <div class="title-container">
                         <h5 id="shiny-modal-title" class="modal-title">Add or select a picture</h5>
-                        <a id="shiny-modal-log-out" href="#">Log out</a>
+                        <div class="shiny-modal-log-out-container">
+                            <a id="shiny-modal-log-out" href="#">Log out</a>
+                        </div>
                     </div>
                     <div class="header-btn-cont">
                         <button type="button" id="modal-close-btn" class="header-btn" aria-label="Close">
@@ -55,7 +61,7 @@
                                 <label class="btn btn-primary upl-sel-btn img-upl-btn" for="img-input-device"><i
                                         class='bx bxs-devices'></i>Device</label>
     
-                                <a class="btn btn-primary upl-sel-btn" id="imgs-src-btn-instagram" href="#"><i
+                                <a class="btn btn-primary upl-sel-btn" id="imgs-src-btn-instagram" href="#" data-auth><i
                                         class='bx bxl-instagram'></i>Instagram</a>
                                         
                                 <button class="btn btn-primary upl-sel-btn"><i
@@ -100,7 +106,7 @@
                                     </div>
                                 </div>
                                 <div class="confirm-btn-container hidden">
-                                    <button class="btn btn-primary">Add images <span id="selected-imgs-counter" class="badge badge-light">4</span></button>
+                                    <button class="btn btn-primary">Add images <span class="badge badge-light selected-imgs-counter">4</span></button>
                                 </div>
                             </div>
                         </div>
@@ -110,17 +116,43 @@
                                 <div class="modal-cards-grid">
                                     <div class="modal-card col-6 col-sm-4 col-lg-3 embed-responsive embed-responsive-1by1">
                                         <div class="img-container embed-responsive-item">
-                                            <img src="" data-source="instagram" alt="">
+                                            <div class="selector-wrapper">
+                                                <input class="img-selector d-none" type="checkbox" name="selector" id="6">
+                                                <label for="6">
+                                                    <img src="../../img/earth.jpg" data-source="instagram" alt="">
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-card col-6 col-sm-4 col-lg-3 embed-responsive embed-responsive-1by1">
+                                        <div class="img-container embed-responsive-item">
+                                            <div class="selector-wrapper">
+                                                <input class="img-selector d-none" type="checkbox" name="selector" id="7">
+                                                <label for="7">
+                                                    <img src="../../img/chipmonks.jpg" data-source="instagram" alt="">
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-card col-6 col-sm-4 col-lg-3 embed-responsive embed-responsive-1by1">
+                                        <div class="selector-wrapper embed-responsive-item">
+                                            <input class="img-selector d-none" type="checkbox" name="selector" id="8">
+                                            <label for="8">
+                                                <img src="../../img/HandsHeart.jpg" data-source="instagram" alt="">
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
+                                <div class="confirm-btn-container hidden">
+                                    <button class="btn btn-primary">Select & edit <span class="badge badge-light selected-imgs-counter">4</span></button>
+                                </div>
                             </div>
                         </div>
-    
+
                         <div id="page-3" class="page" data-page="3">
                             <div class="editor-container">
                                 <div class="editor-image-container">
-                                    <img id="editor-image" src="" alt="">
+                                    <img id="editor-image" src="../../img/earth.jpg" alt="">
                                 </div>
                                 <div class="editor-controls">
                                     <div class="controls">
@@ -134,14 +166,43 @@
                                         </div>
                                         <button id="editor-reset-btn" class="btn btn-primary edit-action-btn"><i class='bx bx-reset'></i></button>
                                     </div>
-                                    <div class="controls-footer">
-                                        <div class="progress-container">
-                                            <div id="save-progress-bar" class="progress" hidden>
-                                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+                                </div>
+                                <div class="dropdown-divider"></div>
+                                <div class="editor-spinner">                        
+                                    <div class="swiper-container mySwiper2">
+                                        <div class="swiper-wrapper">
+                                            <div class="swiper-slide">
+                                                <img src="../../img/earth.jpg" alt="">
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <img src="../../img/chipmonks.jpg" alt="">
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <img src="../../img/HandsHeart.jpg" alt="">
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <img src="../../img/chipmonks.jpg" alt="">
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <img src="../../img/earth.jpg" alt="">
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <img src="../../img/HandsHeart.jpg" alt="">
                                             </div>
                                         </div>
-                                        <button id="editor-save-image-btn" class="btn btn-primary">Save changes</button>
                                     </div>
+                                    <div class="row mx-0 overlay-container justify-content-around">
+                                        <div class="col overlay"></div>
+                                        <div class="col-auto selector"></div>
+                                        <div class="col overlay"></div>
+                                    </div>
+                                </div>
+
+                                <div class="dropdown-divider"></div>
+                                <div class="editor-footer-controls">
+                                    <button id="cropper-save-btn" class="btn btn-secondary" data-bs-dismiss="modal">Auto crop all</button>
+                                    <button id="swiper-next" class="btn btn-primary">Crop & Edit next</button>
+                                    <button id="swiper-save" class="btn btn-primary px-5" data-bs-dismiss="modal" >Crop & Save</button>
                                 </div>
                             </div>
                         </div>
@@ -159,6 +220,8 @@
     <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
     <!-- Cropper JS Scipt -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.min.js" integrity="sha512-FHa4dxvEkSR0LOFH/iFH0iSqlYHf/iTwLc5Ws/1Su1W90X0qnxFxciJimoue/zyOA/+Qz/XQmmKqjbubAAzpkA==" crossorigin="anonymous"></script>
+    <!-- Swiper Script -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
     <!-- Own Script -->
     <script src="./shiny-picker.js"></script>
