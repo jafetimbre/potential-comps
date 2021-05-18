@@ -89,7 +89,43 @@ const ShinyPicker = {
         // Isotope layout setup
         var grid = $("#defined-cards-grid").isotope({
             itemSelector: '.element-item'
-        })
+        });
+
+        $(this._modal).on('shown.bs.modal', e => {
+            if (this._components.swiper == null) {
+                this._components.swiper = new Swiper(".mySwiper2", {
+                    init: true,
+                    slidesPerView: "auto",
+                    allowTouchMove: false,
+                    grabCursor: false,
+                    centeredSlides: true,
+                    pagination: {
+                        el: ".swiper-pagination",
+                        type: "progressbar",
+                    },
+                    spaceBetween: 5,
+                    resistanceRatio: .5,
+                    navigation: {
+                        disabledClass: 'slider-hidden',
+                        nextEl: "#swiper-next"
+                    },
+                    
+                    on: {
+                        init: function () {
+                            console.log('swiper initialized');
+                            
+                        },
+                        slideChange: function () {
+                            console.log('slide change');
+                        },
+                        reachEnd: function () {
+                            console.log('reach end');
+                        },
+                    },
+                });
+            }
+        });
+
     
         const cropperImage = document.getElementById('editor-image');
         // this._cropper.instance = new Cropper(cropperImage, {
@@ -114,6 +150,8 @@ const ShinyPicker = {
         //         }, 500)
         //     }
         // });
+
+        
 
         // Device upload
         this._modal.querySelector('#img-input-device').addEventListener('change', e => {

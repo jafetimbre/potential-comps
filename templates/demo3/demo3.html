@@ -11,6 +11,11 @@
 
     <!-- Own CSS -->
     <link rel="stylesheet" href="./shiny-picker.css">
+
+
+    <!-- Vendor CSS -->
+    <link rel="stylesheet" href="./vendor/cropperjs/css/cropper.min.css">
+
 </head>
 <body>
     <div class="text-center mt-5">
@@ -34,14 +39,14 @@
                 
                 <div class="modal-header">
                     <div class="header-btn-cont">
-                        <button type="button" id="page-back-btn" class="header-btn page-back-btn"
+                        <button type="button" id="page-back-btn" class="header-btn page-back-btn hidden"
                             aria-label="Back">
                             <i class='bx bx-arrow-back'></i>
                         </button>
                     </div>
                     <div class="title-container">
                         <h5 id="shiny-modal-title" class="modal-title">Add or select a picture</h5>
-                        <div class="shiny-modal-log-out-container">
+                        <div class="shiny-modal-log-out-container hidden">
                             <a id="shiny-modal-log-out" href="#">Log out</a>
                         </div>
                     </div>
@@ -57,24 +62,24 @@
                         <div id="page-1" class="page" data-page="1">
                             <div class="upl-sel-btns-cont">
     
-                                <input type="file" id="img-input-device" class="img-input" accept="image/*" disabled/>
+                                <input type="file" id="img-input-device" class="img-input" accept="image/*" multiple/>
                                 <label class="btn btn-primary upl-sel-btn img-upl-btn" for="img-input-device"><i
                                         class='bx bxs-devices'></i>Device</label>
     
                                 <a class="btn btn-primary upl-sel-btn" id="imgs-src-btn-instagram" href="#" data-auth><i
                                         class='bx bxl-instagram'></i>Instagram</a>
                                         
-                                <button class="btn btn-primary upl-sel-btn"><i
+                                <!-- <button class="btn btn-primary upl-sel-btn"><i
                                         class='bx bxl-facebook'></i>Facebook</button>
                                 <button class="btn btn-primary upl-sel-btn"><i
                                         class='bx bx-camera'></i>Camera</button>
-                                
+                                -->
                                 <div class="separator">
                                     <span>or</span>
                                 </div>
                             </div>
     
-                            <div class="modal-cards-container">
+                            <!-- <div class="modal-cards-container">
                                 <div class="modal-cards-grid">
                                     <div class="modal-card col-6 col-sm-4 col-lg-3 embed-responsive embed-responsive-1by1">
                                         <div class="img-container embed-responsive-item">
@@ -108,11 +113,12 @@
                                 <div class="confirm-btn-container hidden">
                                     <button class="btn btn-primary">Add images <span class="badge badge-light selected-imgs-counter">4</span></button>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
     
-                        <div id="page-2" hidden class="page" data-page="2">
-                            <div class="modal-cards-container">
+                        <div id="page-2" class="page hidden" data-page="2">
+                            Page 2
+                            <!-- <div class="modal-cards-container">
                                 <div class="modal-cards-grid">
                                     <div class="modal-card col-6 col-sm-4 col-lg-3 embed-responsive embed-responsive-1by1">
                                         <div class="img-container embed-responsive-item">
@@ -146,13 +152,13 @@
                                 <div class="confirm-btn-container hidden">
                                     <button class="btn btn-primary">Select & edit <span class="badge badge-light selected-imgs-counter">4</span></button>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
 
                         <div id="page-3" class="page" data-page="3">
                             <div class="editor-container">
                                 <div class="editor-image-container">
-                                    <img id="editor-image" src="../../img/earth.jpg" alt="">
+                                    <img id="editor-image" src="" alt="">
                                 </div>
                                 <div class="editor-controls">
                                     <div class="controls">
@@ -170,7 +176,7 @@
                                 <div class="dropdown-divider"></div>
                                 <div class="editor-spinner">                        
                                     <div class="swiper-container mySwiper2">
-                                        <div class="swiper-wrapper">
+                                        <!-- <div class="swiper-wrapper">
                                             <div class="swiper-slide">
                                                 <img src="../../img/earth.jpg" alt="">
                                             </div>
@@ -189,13 +195,13 @@
                                             <div class="swiper-slide">
                                                 <img src="../../img/HandsHeart.jpg" alt="">
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </div>
-                                    <div class="row mx-0 overlay-container justify-content-around">
+                                    <!-- <div class="row mx-0 overlay-container justify-content-around">
                                         <div class="col overlay"></div>
                                         <div class="col-auto selector"></div>
                                         <div class="col overlay"></div>
-                                    </div>
+                                    </div> -->
                                 </div>
 
                                 <div class="dropdown-divider"></div>
@@ -212,19 +218,34 @@
         </div>
     </div>
 
+
+    <!-- Vendor files -->
+    <script src="./vendor/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+    <script src="./vendor/cropperjs/js/cropper.min.js"></script>
+    <!-- <script src="./vendor/jquery-cropper/jquery-cropper.min.js"></script> -->
+
+
     <!-- Bootstrap Script -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <!-- Isotope Layout Script -->
+
     <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
-    <!-- Cropper JS Scipt -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.min.js" integrity="sha512-FHa4dxvEkSR0LOFH/iFH0iSqlYHf/iTwLc5Ws/1Su1W90X0qnxFxciJimoue/zyOA/+Qz/XQmmKqjbubAAzpkA==" crossorigin="anonymous"></script>
-    <!-- Swiper Script -->
+
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.min.js" integrity="sha512-FHa4dxvEkSR0LOFH/iFH0iSqlYHf/iTwLc5Ws/1Su1W90X0qnxFxciJimoue/zyOA/+Qz/XQmmKqjbubAAzpkA==" crossorigin="anonymous"></script> -->
+
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
     <!-- Own Script -->
-    <script src="./shiny-picker.js"></script>
-    <script src="./demo3.js"></script>
+    <!-- <script src="./shiny-picker.js"></script> -->
+    <!-- <script src="./demo3.js"></script> -->
+
+
+
+
+    
+
+    <script src="./try.js"></script>
 </body>
 </html>

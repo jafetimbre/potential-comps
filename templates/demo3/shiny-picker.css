@@ -56,6 +56,9 @@
 .modal-header .title-container {
     text-align: center;
 }
+.modal-header .header-btn-cont #page-back-btn.hidden {
+    display: none;
+}
 .modal-header .title-container .shiny-modal-log-out-container {
     max-height: 25px;
     opacity: 1;
@@ -124,6 +127,9 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+}
+.pages-container .page.hidden {
+    display: none!important;
 }
 /* } Pages container and pages base setup */
 
