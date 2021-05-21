@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <!-- Boxicons CSS -->
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
     <!-- Swiper CSS -->
@@ -15,6 +15,7 @@
 
     <!-- Vendor CSS -->
     <link rel="stylesheet" href="./vendor/cropperjs/css/cropper.min.css">
+    <link rel="stylesheet" href="./vendor/swiper-6.6.1/css/swiper-bundle.min.css">
 
 </head>
 <body>
@@ -31,12 +32,12 @@
         <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-sm-down" role="document">
             <div class="modal-content">
     
-                <!-- <div id="load-spinner" class="spinner-overlay" hidden>
+                <div id="load-spinner" class="spinner-overlay hidden">
                     <div class="spinner-border" role="status">
                         <span class="sr-only">Loading...</span>
                     </div>
-                </div> -->
-                
+                    <span class="spinner-text">Loading</span>
+                </div>
                 <div class="modal-header">
                     <div class="header-btn-cont">
                         <button type="button" id="page-back-btn" class="header-btn page-back-btn hidden"
@@ -175,12 +176,12 @@
                                 </div>
                                 <div class="dropdown-divider"></div>
                                 <div class="editor-spinner">                        
-                                    <div class="swiper-container mySwiper2">
-                                        <!-- <div class="swiper-wrapper">
-                                            <div class="swiper-slide">
+                                    <div id="editor-swiper" class="swiper-container">
+                                        <div class="swiper-wrapper">
+                                            <!-- <div class="swiper-slide">
                                                 <img src="../../img/earth.jpg" alt="">
-                                            </div>
-                                            <div class="swiper-slide">
+                                            </div> -->
+                                            <!-- <div class="swiper-slide">
                                                 <img src="../../img/chipmonks.jpg" alt="">
                                             </div>
                                             <div class="swiper-slide">
@@ -194,21 +195,21 @@
                                             </div>
                                             <div class="swiper-slide">
                                                 <img src="../../img/HandsHeart.jpg" alt="">
-                                            </div>
-                                        </div> -->
+                                            </div> -->
+                                        </div>
                                     </div>
-                                    <!-- <div class="row mx-0 overlay-container justify-content-around">
+                                    <div class="row mx-0 overlay-container justify-content-around">
                                         <div class="col overlay"></div>
                                         <div class="col-auto selector"></div>
                                         <div class="col overlay"></div>
-                                    </div> -->
+                                    </div>
                                 </div>
 
                                 <div class="dropdown-divider"></div>
                                 <div class="editor-footer-controls">
                                     <button id="cropper-save-btn" class="btn btn-secondary" data-bs-dismiss="modal">Auto crop all</button>
                                     <button id="swiper-next" class="btn btn-primary">Crop & Edit next</button>
-                                    <button id="swiper-save" class="btn btn-primary px-5" data-bs-dismiss="modal" >Crop & Save</button>
+                                    <!-- <button id="swiper-save" class="btn btn-primary px-5" data-bs-dismiss="modal" >Crop & Save</button> -->
                                 </div>
                             </div>
                         </div>
@@ -222,6 +223,7 @@
     <!-- Vendor files -->
     <script src="./vendor/jquery-3.6.0/jquery-3.6.0.min.js"></script>
     <script src="./vendor/cropperjs/js/cropper.min.js"></script>
+    <script src="./vendor/swiper-6.6.1/js/swiper-bundle.min.js"></script>
     <!-- <script src="./vendor/jquery-cropper/jquery-cropper.min.js"></script> -->
 
 
@@ -229,13 +231,13 @@
     <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
     <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
 
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.min.js" integrity="sha512-FHa4dxvEkSR0LOFH/iFH0iSqlYHf/iTwLc5Ws/1Su1W90X0qnxFxciJimoue/zyOA/+Qz/XQmmKqjbubAAzpkA==" crossorigin="anonymous"></script> -->
 
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <!-- <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script> -->
 
     <!-- Own Script -->
     <!-- <script src="./shiny-picker.js"></script> -->
