@@ -1,5 +1,7 @@
 var ShinyPicker = (function () {
     let _isInit = false,
+    _imgSource = null,
+    _target = null,
     _comps = {
         modal: null,
         title: {
@@ -36,6 +38,8 @@ var ShinyPicker = (function () {
             toPage: function (newPage) {
                 if (!pagerInit) throw 'ShinyPicker._pager not initialized!';
                 comps.title.inst.text(comps.title.text[newPage]);
+
+                _selector.reset();
                 
                 if (newPage == 0 && currPage != 0) {
                     comps.logoutCont.toggleClass('hidden', true);
@@ -108,35 +112,47 @@ var ShinyPicker = (function () {
             isReady: false
         };
 
+        btns = {
+            editorNextSave: null,
+        }
+
         function changeImage(img) {
             if (!editorInit) throw 'ShinyPicker.cropper not initialized!';
             console.log('cropper image change');
             cropper.inst.replace(img);
         };
 
-        return {
-            test: function () {
-                // TODO: delete this function
-                console.log($(swiper.inst.el).find(`#swiper-img-0`).attr('src', '../../img/chipmonks.jpg'))
-            },
+        function disable() {
+            // cropper.inst.disable();
+            // swiper.inst.disable();
+        };
 
+        function crop() {
+            console.log('Crop');
+            if (!cropper.isReady) throw 'ShinyPicker.cropper not initialized!';
+            return cropper.inst.getCroppedCanvas({
+                maxWidth: exportOptions.imageMaxSize[0],
+                maxHeight: exportOptions.imageMaxSize[1],
+                fillColor: '#fff',
+                imageSmoothingEnabled: false,
+                imageSmoothingQuality: 'high',
+            });
+        };
+
+        return {
             isInit: function () { return editorInit; },
 
-            disable: function () {
-                // cropper.inst.disable();
-                // swiper.inst.disable();
+            reset: function() {
+                console.log('editor reset')
+                swiper.inst.removeAllSlides();
             },
 
-            crop: function () {
-                console.log('Crop');
-            },
-            
-            addImages: function (imgs) {
-                swiper.inst.removeAllSlides();
+            addImages: function (imgs, compression) {
+                _editor.reset();
 
                 window.URL = window.URL || window.webkitURL;
                 let nonLoadedImgs = imgs.length;
-                Array.from(imgs).forEach( (_, i) => {
+                Array.from(imgs).map( (_, i) => {
                     swiper.inst.appendSlide(`<div class="swiper-slide"><img id="swiper-img-${i}" src="" alt=""></div>`);
 
                     $(swiper.inst.el).find(`#swiper-img-${i}`).one("load", function() {
@@ -162,8 +178,11 @@ var ShinyPicker = (function () {
                 });
 
                 // TODO: speed up compression
-                Array.from(imgs).forEach( function(img, i) {
-                    if (img.size >= exportOptions.maxSize) {
+                Array.from(imgs).map( function(img, i) {
+                    if (!compression) {
+                        $(swiper.inst.el).find(`#swiper-img-${i}`).attr('src', img);
+                    }
+                    else if (img.size >= exportOptions.maxSize) {
                         console.log(img.size);
                         compress(img, exportOptions.compressionAmount, function(compImg) {
                             let url = URL.createObjectURL(compImg);
@@ -176,6 +195,13 @@ var ShinyPicker = (function () {
                         $(swiper.inst.el).find(`#swiper-img-${i}`).attr('src', url);
                     }
                 });
+
+                if (imgs.length > 1) {
+                    btns.editorNextSave.text('Crop & Edit next');
+                }
+                else {
+                    btns.editorNextSave.text('Crop & Save');
+                }
             },
 
             init: function () {
@@ -197,7 +223,7 @@ var ShinyPicker = (function () {
                     toggleDragModeOnDblclick: false,
 
                     ready() {
-                        cropper.inst.disable();
+                        // disable();
                         cropper.isReady = true;
                     }
                 });
@@ -206,7 +232,7 @@ var ShinyPicker = (function () {
                 swiper.inst = new Swiper("#editor-swiper", {
                     init: true,
                     slidesPerView: "auto",
-                    allowTouchMove: true,
+                    allowTouchMove: false,
                     grabCursor: false,
                     centeredSlides: true,
                     // pagination: {
@@ -215,10 +241,10 @@ var ShinyPicker = (function () {
                     // },
                     spaceBetween: 5,
                     resistanceRatio: .5,
-                    navigation: {
-                        disabledClass: 'slider-hidden',
-                        nextEl: "#swiper-next"
-                    },
+                    // navigation: {
+                    //     disabledClass: 'hidden',
+                    //     // nextEl: "#editor-next"
+                    // },
                     
                     on: {
                         init: function () {
@@ -228,15 +254,31 @@ var ShinyPicker = (function () {
                         slideChange: function (s) {
                             if (!swiper.isReady) return;
                             console.log('slide change');
-
-                            console.log($(s.slides[s.activeIndex]).find('img'))
-                            changeImage($(s.slides[s.activeIndex]).find('img').prop('src'))
-                        },
-                        reachEnd: function () {
-                            if (!swiper.isReady) return;
-                            console.log('reach end');
+                            changeImage($(s.slides[s.activeIndex]).find('img').prop('src'));
                         },
                     },
+                });
+
+                btns.editorNextSave = $('#editor-next-save');
+
+                btns.editorNextSave.click(function() {
+                    console.log('editor next/save');
+
+                    crop().toBlob(function(blob) {
+                        callbacks.onSave({
+                            blob: blob,
+                            source: _imgSource
+                        })
+                    }, "image/jpeg");
+
+                    if (swiper.inst.isEnd) {
+                        hide();
+                    }
+
+                    swiper.inst.slideNext();
+                    if (swiper.inst.isEnd) {
+                        btns.editorNextSave.text('Crop & Save');
+                    }
                 });
 
                 editorInit = true;
@@ -244,8 +286,87 @@ var ShinyPicker = (function () {
         }
     })();
 
+    // Image selector
+    let _selector = (function () {
+        let selected = [];
+
+        let _comps = {
+            confirmBtnCont: null,
+            selectedCounter: null,
+            imgSourcePanel: null
+        }
+
+        return {
+            getSelected: function() { return selected; },
+
+            reset: function() {
+                selected = [];
+                $('.img-selector:checked').prop('checked', false);
+                _comps.confirmBtnCont.toggleClass('hidden', true);
+                _comps.imgSourcePanel.toggleClass('hidden', false);
+            },
+
+            init: function() {
+                selected = [];
+
+                _comps.confirmBtnCont = $('.confirm-btn-container');
+                _comps.selectedCounter = $('.selected-imgs-counter');
+                _comps.imgSourcePanel = $('.upl-sel-btns-cont');
+
+                $('.img-selector').change(function(e) {
+                    if (this.checked) {
+                        console.log('checked')
+                        selected.push(this.id);
+                    }
+                    else {
+                        console.log('unchecked')
+                        selected.splice(selected.indexOf(this.id), 1);
+                    }
+
+                    _comps.selectedCounter.text(selected.length);
+
+                    if (selected.length <= 0) {
+                        _comps.confirmBtnCont.toggleClass('hidden', true);
+                        _comps.imgSourcePanel.toggleClass('hidden', false);
+                    }
+                    else {
+                        _comps.confirmBtnCont.toggleClass('hidden', false);
+                        _comps.imgSourcePanel.toggleClass('hidden', true);
+                    }
+
+                    console.log(selected)
+                });
+
+                _comps.confirmBtnCont.find('button').click(function(e) {
+                    let sel = selected.map(el => $(`label[for='${el}'] img`).attr('src'));
+
+                    if (_pager.getPageNr() == 0) {
+                        callbacks.onSave({
+                            selected: sel,
+                            idx: _target,
+                            source: 'predefined'
+                        });
+                        hide();
+                    } 
+                    else {
+                        if (_pager.getPageNr() == 1) _imgSource = 'instagram';
+                        wait(true);
+                        _editor.addImages(sel)
+                    }
+
+                    _selector.reset();
+                });
+            }
+        };
+
+    })();
+
     // Event callbacks
     let callbacks = {
+        // User defined callbacks
+        onSave: null,
+        onLogout: null,
+
         // Modal events
         afterModalOpen: function (e) {
             console.log('Modal Opened');
@@ -259,45 +380,32 @@ var ShinyPicker = (function () {
             wait(true);
             let images = e.currentTarget.files;
             if (images.length <= 0) return;
-
-
-
-            // let testImage = images[0];
-            // console.log(testImage)
-            // compress(testImage, .7, compImg => {
-            //     console.log(compImg);
-            // });
-            // return
-
-            // console.log(images);
-
-            _editor.addImages(images);
-            // _pager.toPage(2)
-            // TODO: use the uploaded images furher
-
+            _imgSource = 'device';
+            _editor.addImages(images, true);
             e.currentTarget.value = "";
         },
         imgSrcInstagram: function (e) {
             e.preventDefault();
-            console.log('Instagram btn clicked')
-            _pager.toPage(1);
+            console.log('Instagram btn clicked');
             // TODO: Instagram things
+
+            if (e.currentTarget.hasAttribute('data-auth')) {
+                _pager.toPage(1);
+                return;
+            }
+            else {
+                let url = `${e.currentTarget.href}`
+                window.location.href = `${url}`; // ?target=${this._exportTarget.dataset.position}
+            }
         },
         socialLogout: function (e) {
             e.preventDefault();
 
             console.log('Logout clicked');
-            _pager.toPage(2);
+            callbacks.onLogout();
 
             // TODO: logout api call
         },
-
-        // Image selector callback
-        imageSelector: function (e) {
-            switch (_pager.getPageNr()) {
-                // TODO: image selector
-            }
-        }
     }
 
     // Reset modal state
@@ -344,39 +452,20 @@ var ShinyPicker = (function () {
         cie.src = window.URL.createObjectURL(imgFile);
     }
 
+    // Close/hide the picker
+    function hide() {
+        _comps.modal.modal('hide');
+    };
+
     return {
-        test: function (i) {
-
-            _editor.test();
-            // $(_editor.swiper.inst.el).find(`#swiper-img-0`)
-
-
-
-            // _comps.modal.trigger('custom.event');
-
-            // _pager.toPage(2);
-
-
-            // if (_comps.halt.waiting) {
-            //     wait(false);
-            // }
-            // else {
-            //     wait(true);
-            // }
-
-
-
-
-            // console.log(_pager.getPageNr())
-            // _pager.toPage(i);
-            // console.log(_pager.getPageNr())
-        },
-
         // Open the picker
-        open: function () {
+        open: function (target, state) {
             if (!_isInit) throw 'ShinyPicker not initialized!';
-
             reset();
+
+            _target = target;
+            if (state != null) _pager.toPage(state);
+
             // Opens the modal
             _comps.modal.modal({
                 backdrop: 'static',
@@ -387,13 +476,8 @@ var ShinyPicker = (function () {
             
         },
 
-        // Close/hide the picker
-        hide: function () {
-            _comps.modal.modal('hide');
-        },
-
         // Initialisation function
-        init: function () {
+        init: function (opt) {
             if (_isInit) throw 'ShinyPicker already initialized!';
             console.log('Shiny picker init');
 
@@ -408,6 +492,7 @@ var ShinyPicker = (function () {
                 title: _comps.title,
                 logoutCont: $('.shiny-modal-log-out-container')
             });
+            _selector.init();
 
             // Modal events setup
             _comps.modal.on('shown.bs.modal', callbacks.afterModalOpen);
@@ -418,15 +503,15 @@ var ShinyPicker = (function () {
             });
 
             // Setup modal navigation buttons
-            $('#modal-close-btn').click(this.hide);
+            $('#modal-close-btn').click(hide);
 
             // Setup other inputs/btns
             $('#img-input-device').on('change', callbacks.imgSrcDevice);
             $('#imgs-src-btn-instagram').click(callbacks.imgSrcInstagram);
             $('#shiny-modal-log-out').click(callbacks.socialLogout);
 
-            // Image multiple selector callback
-            $('.img-selector').on('change', callbacks.imageSelector);
+            if (opt.hasOwnProperty('onSave')) callbacks.onSave = opt.onSave;
+            if (opt.hasOwnProperty('onLogout')) callbacks.onLogout = opt.onLogout;
 
             return this;
         },
@@ -435,8 +520,15 @@ var ShinyPicker = (function () {
 
 $(function () {
     console.log('Jquery loaded');
-    console.log(ShinyPicker.init().open());
-    // ShinyPicker.test()
+    console.log(ShinyPicker.init({
+        onSave: function(r) {
+            console.log('Save');
+            console.log(r);
+        },
+        onLogout: function() {
+            console.log('Logout');
+        }
+    }).open(1));
 
     $('#open-modal').click(ShinyPicker.open)
 });
